@@ -14,7 +14,9 @@ module Twofishes
     def self.geocode(location, includes: [])
       handle_response do
         request = GeocodeRequest.new(query: location, responseIncludes: includes)
-        $twofishes_client.geocode(request)
+        $twofishes_client.with do |conn|
+          conn.geocode(request)
+        end
       end
     end
 
@@ -29,7 +31,9 @@ module Twofishes
       handle_response do
         point = GeocodePoint.new(lat: coordinates[0], lng: coordinates[1])
         request = GeocodeRequest.new(ll: point, responseIncludes: includes)
-        $twofishes_client.reverseGeocode(request)
+        $twofishes_client.with do |conn|
+          conn.reverseGeocode(request)
+        end
       end
     end
 

@@ -1,7 +1,7 @@
 require 'connection_pool'
 require 'thrift_client'
 
-$twofishes_client = ConnectionPool::Wrapper.new(timeout: Twofishes.configuration.timeout) {
+$twofishes_client = ConnectionPool.new(timeout: Twofishes.configuration.timeout) {
   ThriftClient.new(
     Geocoder::Client,
     Twofishes.configuration.address,
