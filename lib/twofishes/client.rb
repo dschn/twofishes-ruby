@@ -14,7 +14,7 @@ module Twofishes
     def self.geocode(location, includes: [])
       handle_response do
         request = GeocodeRequest.new(query: location, responseIncludes: includes)
-        thrift_client.geocode(request)
+        $twofishes_client.geocode(request)
       end
     end
 
@@ -29,17 +29,8 @@ module Twofishes
       handle_response do
         point = GeocodePoint.new(lat: coordinates[0], lng: coordinates[1])
         request = GeocodeRequest.new(ll: point, responseIncludes: includes)
-        thrift_client.reverseGeocode(request)
+        $twofishes_client.reverseGeocode(request)
       end
-    end
-
-    def self.thrift_client
-      @thrift_client ||= ThriftClient.new(
-        Geocoder::Client,
-        Twofishes.configuration.address,
-        retries: Twofishes.configuration.retries,
-        timeout: Twofishes.configuration.timeout
-      )
     end
 
     private
