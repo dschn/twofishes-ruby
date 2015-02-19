@@ -1,3 +1,14 @@
+require 'connection_pool'
+
+$twofishes_client = ConnectionPool.new(timeout: Twofishes.configuration.timeout) {
+  ThriftClient.new(
+    Geocoder::Client,
+    Twofishes.configuration.address,
+    retries: Twofishes.configuration.retries,
+    timeout: Twofishes.configuration.timeout
+  )
+}
+
 module Twofishes
   class Client
     # @see https://github.com/foursquare/twofishes/blob/master/docs/twofishes_requests.md
